@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เข้าสู่ระบบ - Network Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specific styles for the login page layout */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f1f5f9;
+            font-family: 'Inter', 'Kanit', sans-serif;
+        }
+        .login-container {
+            background-color: #ffffff;
+            padding: 2.5rem 3rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+        .login-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 2rem;
+        }
+        .login-form .form-group {
+            margin-bottom: 1.25rem;
+            text-align: left;
+        }
+        .login-button {
+            margin-top: 2rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            width: 100%;
+        }
+        .login-message {
+            margin-top: 1.5rem;
+            min-height: 1.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1 class="login-title">เข้าสู่ระบบ Network Dashboard</h1>
+        <form id="login-form" class="login-form">
+            <div class="form-group">
+                <label for="login-username">ชื่อผู้ใช้:</label>
+                <input type="text" id="login-username" name="username" value="admin" required autofocus>
+            </div>
+            <div class="form-group">
+                <label for="login-password">รหัสผ่าน:</label>
+                <input type="password" id="login-password" name="password" value="password" required>
+            </div>
+            <button type="submit" class="add-device-button login-button">เข้าสู่ระบบ</button>
+            <p id="login-message" class="login-message"></p>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('login-form');
+            const loginMessage = document.getElementById('login-message');
+
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const username = document.getElementById('login-username').value;
+                const password = document.getElementById('login-password').value;
+
+                try {
+                    const response = await fetch('http://127.0.0.1:5000/api/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password })
+                    });
+                    const data = await response.json();
+
+                    if (response.ok && data.status === 'success') {
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('loggedInUser', username);
+                        window.location.href = 'index.html';
+                    } else {
+                        loginMessage.textContent = data.message || 'An error occurred.';
+                        loginMessage.style.color = '#ef4444';
+                    }
+                } catch (error) {
+                    loginMessage.textContent = 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้';
+                    loginMessage.style.color = '#f97316';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

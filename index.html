@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- /// เพิ่มบรรทัดนี้ใน HEAD /// -->
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="header-left">
+                <h1 class="dashboard-title">Network Dashboard</h1>
+            </div>
+            <nav class="header-nav">
+                <ul class="main-nav">
+                    <li><a href="#" id="nav-dashboard" class="nav-link active">แดชบอร์ด</a></li>
+                    <li><a href="#" id="nav-add-device" class="nav-link">เพิ่มข้อมูล</a></li>
+                    <li><a href="#" id="nav-activity-log" class="nav-link">บันทึกการทำงาน</a></li>
+                </ul>
+            </nav>
+            <div class="header-right">
+                <button class="icon-button user-button" title="บัญชีผู้ใช้" id="user-icon-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="icon-size"><path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.438-.695z" clip-rule="evenodd" /></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="main-section">
+            <div class="category-section">
+                <h2 class="category-title">Routers</h2>
+                <div id="Routers-grid" class="device-grid"></div>
+            </div>
+            <div class="category-section">
+                <h2 class="category-title">Switches</h2>
+                <div id="Switches-grid" class="device-grid"></div>
+            </div>
+        </div>
+
+        <!-- Add Device Section -->
+        <div id="add-device-section" class="main-section hidden">
+            <div class="add-device-container">
+                <form id="add-device-form">
+                    <div class="form-group">
+                        <label for="device-name">ชื่ออุปกรณ์</label>
+                        <input type="text" id="device-name" name="name" placeholder="เช่น Core-Router-01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="device-ip">IP Address</label>
+                        <input type="text" id="device-ip" name="host" placeholder="192.168.1.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="device-category">ประเภท</label>
+                        <select id="device-category" name="category">
+                            <option value="Routers">Router</option>
+                            <option value="Switches">Switch</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="device-username">Username</label>
+                        <input type="text" id="device-username" name="username" value="admin" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="device-password">Password</label>
+                        <input type="password" id="device-password" name="password" value="cisco" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="device-secret">Enable Secret</label>
+                        <input type="password" id="device-secret" name="secret" value="cisco">
+                    </div>
+                    <div class="form-group form-submit">
+                        <button type="submit" class="add-device-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="button-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" /></svg>
+                            <span>เพิ่มอุปกรณ์</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Activity Log Section (can be added back if needed) -->
+        <div id="activity-log-section" class="main-section hidden"></div>
+    </main>
+
+    <!-- Config Modal -->
+    <div id="config-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="close-config-modal" class="modal-close-button">&times;</button>
+            <h2 class="modal-title">ตั้งค่าอุปกรณ์ <span id="config-device-name"></span> (<span id="config-device-ip"></span>)</h2>
+            
+            <!-- /// จุดแก้ไขสำคัญ: ใช้ <pre> เพื่อรักษาการขึ้นบรรทัดใหม่ /// -->
+            <pre id="cli-output"></pre>
+            
+            <div class="cli-message-area">
+                <span id="cli-output-message"></span>
+            </div>
+            <div class="cli-input-area">
+                 <!-- /// จุดแก้ไขสำคัญ: เปลี่ยน textarea เป็น div ที่มี prompt และ input /// -->
+                 <div id="cli-input-wrapper">
+                    <span id="cli-prompt-display"></span>
+                    <input type="text" id="cli-command-input" autocomplete="off">
+                 </div>
+                 <button id="send-cli-button">ส่ง</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- /// script.js ต้องอยู่ท้ายสุดของ body /// -->
+    <script src="script.js"></script>
+</body>
+</html>
