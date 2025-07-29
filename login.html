@@ -1,66 +1,215 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เข้าสู่ระบบ - Network Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Login - Network Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Kanit:wght@400;500&display=swap"
+        rel="stylesheet">
     <style>
-        /* Specific styles for the login page layout */
+        :root {
+            --primary-blue: #0B4F6C;
+            --secondary-blue: #01BAEF;
+            --light-gray: #f0f2f5;
+            --text-color: #333;
+            --border-color: #ccc;
+        }
+
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #f1f5f9;
-            font-family: 'Inter', 'Kanit', sans-serif;
+            margin: 0;
+            background-color: var(--light-gray);
+            font-family: 'Roboto', 'Kanit', sans-serif;
         }
-        .login-container {
+
+        .login-wrapper {
+            display: flex;
+            width: 900px;
+            height: 500px;
             background-color: #ffffff;
-            padding: 2.5rem 3rem;
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            width: 100%;
-            max-width: 450px;
-            text-align: center;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
-        .login-title {
-            font-size: 2rem;
+
+        .login-info {
+            flex: 1;
+            background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
+            color: white;
+            padding: 60px 40px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-info h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
             font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 2rem;
+            z-index: 2;
         }
-        .login-form .form-group {
-            margin-bottom: 1.25rem;
-            text-align: left;
-        }
-        .login-button {
-            margin-top: 2rem;
-            padding: 0.75rem 1.5rem;
+
+        .login-info p {
             font-size: 1rem;
-            width: 100%;
+            line-height: 1.6;
+            z-index: 2;
         }
-        .login-message {
+
+        .info-circle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .circle1 {
+            width: 300px;
+            height: 300px;
+            top: -100px;
+            left: -100px;
+        }
+
+        .circle2 {
+            width: 200px;
+            height: 200px;
+            bottom: -80px;
+            right: -50px;
+        }
+
+        .circle3 {
+            width: 100px;
+            height: 100px;
+            bottom: 40px;
+            left: -40px;
+        }
+
+        .login-form-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .user-icon {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 2rem;
+            color: var(--primary-blue);
+        }
+
+        #login-form {
+            width: 100%;
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            background-color: #f7f7f7;
+            border-radius: 25px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--secondary-blue);
+            box-shadow: 0 0 5px rgba(1, 186, 239, 0.5);
+        }
+
+        .login-button {
+            padding: 12px 20px;
+            border: 1px solid var(--primary-blue);
+            background-color: transparent;
+            color: var(--primary-blue);
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 1rem;
+        }
+
+        .login-button:hover {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        #login-message {
             margin-top: 1.5rem;
             min-height: 1.25rem;
+            color: #ef4444;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 900px) {
+            .login-wrapper {
+                flex-direction: column;
+                width: 90vw;
+                height: auto;
+                max-width: 450px;
+            }
+
+            .login-info {
+                text-align: center;
+                padding: 40px 20px;
+            }
+
+            .login-info h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
+
 <body>
-    <div class="login-container">
-        <h1 class="login-title">เข้าสู่ระบบ Network Dashboard</h1>
-        <form id="login-form" class="login-form">
-            <div class="form-group">
-                <label for="login-username">ชื่อผู้ใช้:</label>
-                <input type="text" id="login-username" name="username" value="admin" required autofocus>
-            </div>
-            <div class="form-group">
-                <label for="login-password">รหัสผ่าน:</label>
-                <input type="password" id="login-password" name="password" value="password" required>
-            </div>
-            <button type="submit" class="add-device-button login-button">เข้าสู่ระบบ</button>
-            <p id="login-message" class="login-message"></p>
-        </form>
+
+    <div class="login-wrapper">
+        <div class="login-info">
+            <div class="info-circle circle1"></div>
+            <div class="info-circle circle2"></div>
+            <div class="info-circle circle3"></div>
+            <h1 style="font-size: 20px; height: 5px;">Welcome to </h1>
+            <h1 style="font-size: 25px; height: 10px;">Network Management System.</h1>
+            <p>เว็บไซต์จัดการเน็ตเวิร์คอัตโนมัติ และการค้นคืนข้อมูลของอุปกรณ์ในระบบเน็ตเวิร์ค</p>
+        </div>
+        <div class="login-form-container">
+            <svg class="user-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd"
+                    d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
+                    clip-rule="evenodd" />
+            </svg>
+
+            <form id="login-form">
+                <div class="input-group">
+                    <input type="text" id="login-username" name="username" placeholder="Username" value="admin" required
+                        autofocus>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="login-password" name="password" placeholder="Password" value="password"
+                        required>
+                </div>
+                <button type="submit" class="login-button">LOGIN</button>
+            </form>
+            <p id="login-message"></p>
+        </div>
     </div>
 
     <script>
@@ -68,10 +217,19 @@
             const loginForm = document.getElementById('login-form');
             const loginMessage = document.getElementById('login-message');
 
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                window.location.href = 'index.html';
+            }
+
             loginForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const username = document.getElementById('login-username').value;
                 const password = document.getElementById('login-password').value;
+                const button = e.target.querySelector('button');
+                button.disabled = true;
+                button.textContent = 'LOGGING IN...';
+                loginMessage.textContent = '';
+
 
                 try {
                     const response = await fetch('http://127.0.0.1:5000/api/login', {
@@ -87,14 +245,16 @@
                         window.location.href = 'index.html';
                     } else {
                         loginMessage.textContent = data.message || 'An error occurred.';
-                        loginMessage.style.color = '#ef4444';
                     }
                 } catch (error) {
-                    loginMessage.textContent = 'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้';
-                    loginMessage.style.color = '#f97316';
+                    loginMessage.textContent = 'Cannot connect to the server.';
+                } finally {
+                    button.disabled = false;
+                    button.textContent = 'LOGIN';
                 }
             });
         });
     </script>
 </body>
+
 </html>
